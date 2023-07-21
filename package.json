@@ -10,5 +10,9 @@
     "RIDO"
   ],
   "author": "Monstea",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ethers": "^6.6.4",
+    "js-metamask-ii": "^0.0.3"
+  }
 }
