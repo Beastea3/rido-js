@@ -1,0 +1,14 @@
+{
+  "name": "ridojs",
+  "version": "0.0.0",
+  "description": "JS Dev Kit for RIDO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "RIDO"
+  ],
+  "author": "Monstea",
+  "license": "ISC"
+}
