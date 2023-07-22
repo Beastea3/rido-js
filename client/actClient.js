@@ -15,31 +15,31 @@ class ACT_Client extends RidoClient {
     return client.initAgent();
   }
 
-  async mintTo(_tokenId, permissionType, expireAt, addr) {
+  async mint(voNftTokenId, permissionType, expireaAt) {
+    this.checkActive();
+    return this.agent.mint(BigInt(0), voNftTokenId, BigInt(expireAt));
+  }
+
+  async mintTo(voNftTokenId, permissionType, expireAt, addr) {
     this.checkActive();
     // const expireAt = `${getTimeOfNextDay()}000000`;
     // console.log(BigInt(permissionType), _tokenId, BigInt(expireAt), addr);
     return this.agent.mint_to(
       BigInt(permissionType),
-      _tokenId,
+      voNftTokenId,
       BigInt(expireAt),
       addr
     );
   }
 
-  async mint(_tokenId, permissionType, expireaAt) {
+  async transferFrom(permissionType, _tokenId, voNftTokenId, srcAddr, tgtAddr) {
     this.checkActive();
-    return this.agent.mint(BigInt(0), _tokenId, BigInt(expireAt));
-  }
-
-  async transfer(permissionType, _tokenId, voNftTokenId, from, to) {
-    this.checkActive();
-    return this.agent.transfer(
+    return this.agent.transfer_from(
       permissionType,
       _tokenId,
       voNftTokenId,
-      from,
-      to
+      srcAddr,
+      tgtAddr
     );
   }
 
@@ -48,9 +48,9 @@ class ACT_Client extends RidoClient {
     return this.agent.owner_of(_tokenId, voNftTokenId, permissionType);
   }
 
-  async permiossion(_tokenId, permissionType, expireaAt) {
+  async permission(voNftTokenId, permissionType, expireaAt) {
     this.checkActive();
-    return this.agent.mint(BigInt(0), _tokenId, BigInt(expireAt));
+    return this.agent.mint(BigInt(0), voNftTokenId, BigInt(expireAt));
   }
 
   async expirationTime(_tokenId, voNftTokenId, permissionType) {
@@ -58,37 +58,37 @@ class ACT_Client extends RidoClient {
     return this.agent.expiration_time(_tokenId, voNftTokenId, permissionType);
   }
 
-  async approve(_tokenId, voNftTokenId, permissionType, expireaAt) {
+  async approve(_tokenId, voNftTokenId, permissionType, addr) {
     this.checkActive();
     return this.agent.approve();
   }
 
-  async unapprove(_tokenId, permissionType, expireaAt) {
+  async unapprove(_tokenId, voNftTokenId, permissionType) {
     this.checkActive();
     return this.agent.unapprove();
   }
 
-  async isApprovedForAll(_tokenId, permissionType, expireaAt) {
+  async isApprovedForAll(srcAddr, tgtAddr) {
     this.checkActive();
     return this.agent.is_approved_for_all();
   }
 
-  async setApprovalForAll(_tokenId, permissionType, expireaAt) {
+  async setApprovalForAll(addr, approved) {
     this.checkActive();
     return this.agent.set_approval_for_all();
   }
 
-  async getApproved(_tokenId, permissionType, expireaAt) {
+  async getApproved(_tokenId, voNftTokenId, permissionType) {
     this.checkActive();
     return this.agent.get_approved();
   }
 
-  async getToken(_tokenId, permissionType, expireaAt) {
+  async getToken(voNftTokenId, permissionType, addr) {
     this.checkActive();
     return this.agent.get_token();
   }
 
-  async merge(_tokenId, permissionType, addr) {
+  async merge(voNftTokenId, permissionType, addr) {
     this.checkActive();
     return this.agent.merge();
   }

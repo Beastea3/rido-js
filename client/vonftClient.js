@@ -40,14 +40,14 @@ class VONFT_Client extends VOSBT_Client {
     return this.agent.is_approved_for_all(srcAddr, tgtAddr);
   }
 
-  async setApprovalForAll(addr) {
+  async setApprovalForAll(addr, approved) {
     this.checkActive();
     return this.agent.set_approval_for_all(addr);
   }
 
-  async transfer(from, to, tokenId) {
+  async transferFrom(from, to, tokenId) {
     this.checkActive();
-    return this.agent.transfer(from, to, tokenId);
+    return this.agent.transfer_from(from, to, tokenId);
   }
 }
 

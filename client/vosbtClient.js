@@ -15,9 +15,10 @@ class VOSBT_Client extends RidoClient {
     return client.initAgent();
   }
 
-  async mintTo(address, type) {
+  async mint(type) {
     this.checkActive();
-    return this.agent.mint_to(address, pubtType);
+    //
+    return this.agent.mint(type);
   }
 
   async getToken(address) {
