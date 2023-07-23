@@ -1,25 +1,27 @@
-import RidoClient from "./client";
-import actDid from "../did/act";
+import RidoClient from './ridoClient';
+import actDid from '../did/act';
 
-class ACT_Client extends RidoClient {
+class ActClient extends RidoClient {
   construct({ identity, canisterId }) {
-    return new RidoClient({
-      identity,
-      canisterId,
-      did: actDid,
-    });
+    this.identity = identity;
+    this.canisterId = canisterId;
+    this.did = actDid;
+
+    return this;
   }
 
   static createAgent({ identity, canisterId }) {
-    const client = new ACT_Client({ identity, canisterId });
+    const client = new ActClient({ identity, canisterId });
     return client.initAgent();
   }
 
-  async mint(voNftTokenId, permissionType, expireaAt) {
+  // act_mint : (nat8, nat64, nat64) -> (Result_1);
+  async mint(voNftTokenId, permissionType, expireAt) {
     this.checkActive();
     return this.agent.mint(BigInt(0), voNftTokenId, BigInt(expireAt));
   }
 
+  // act_mint_to : (nat8, nat64, nat64, Account) -> (Result_1);
   async mintTo(voNftTokenId, permissionType, expireAt, addr) {
     this.checkActive();
     // const expireAt = `${getTimeOfNextDay()}000000`;
@@ -28,7 +30,7 @@ class ACT_Client extends RidoClient {
       BigInt(permissionType),
       voNftTokenId,
       BigInt(expireAt),
-      addr
+      addr,
     );
   }
 
@@ -39,59 +41,69 @@ class ACT_Client extends RidoClient {
       _tokenId,
       voNftTokenId,
       srcAddr,
-      tgtAddr
+      tgtAddr,
     );
   }
 
+  // act_transfer_from : (Account, Account, nat64, nat64) -> ();
   async ownerOf(_tokenId, voNftTokenId, permissionType) {
     this.checkActive();
     return this.agent.owner_of(_tokenId, voNftTokenId, permissionType);
   }
 
+  // permission : (nat8, Account, nat64) -> (Result_4) query;
   async permission(voNftTokenId, permissionType, expireaAt) {
     this.checkActive();
     return this.agent.mint(BigInt(0), voNftTokenId, BigInt(expireAt));
   }
 
+  // act_expiration_time : (nat64, nat64) -> (nat64) query;
   async expirationTime(_tokenId, voNftTokenId, permissionType) {
     this.checkActive();
     return this.agent.expiration_time(_tokenId, voNftTokenId, permissionType);
   }
 
+  // act_approve : (Account, nat64, nat64) -> ();
   async approve(_tokenId, voNftTokenId, permissionType, addr) {
     this.checkActive();
     return this.agent.approve();
   }
 
+  // act_unapprove : (nat64, nat64) -> ();
   async unapprove(_tokenId, voNftTokenId, permissionType) {
     this.checkActive();
     return this.agent.unapprove();
   }
 
+  // act_is_approved_for_all : (Account, Account) -> (bool) query;
   async isApprovedForAll(srcAddr, tgtAddr) {
     this.checkActive();
     return this.agent.is_approved_for_all();
   }
 
+  // act_set_approval_for_all : (Account, bool) -> ();
   async setApprovalForAll(addr, approved) {
     this.checkActive();
     return this.agent.set_approval_for_all();
   }
 
+  // act_get_approved : (nat64, nat64) -> (Account_1) query;
   async getApproved(_tokenId, voNftTokenId, permissionType) {
     this.checkActive();
     return this.agent.get_approved();
   }
 
+  // act_get_user_tokens : (Account, nat64) -> (vec nat64) query;
   async getToken(voNftTokenId, permissionType, addr) {
     this.checkActive();
     return this.agent.get_token();
   }
 
+  // act_merge : (nat8, nat64, principal) -> (Result);
   async merge(voNftTokenId, permissionType, addr) {
     this.checkActive();
     return this.agent.merge();
   }
 }
 
-export default ACT_Client;
+export default ActClient;

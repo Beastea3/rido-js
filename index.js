@@ -1,7 +1,7 @@
-import RidoClient from "./client";
-import VONFT_Client from "./client/vonftClient";
-import VOSBT_Client from "./client/vosbtClient";
-import authClient from "./helper/identity";
+import RidoClient from './client/ridoClient';
+import VonftClient from './client/vonftClient';
+import VosbtClient from './client/vosbtClient';
+import authClient from './helper/identity';
 
 export default RidoClient;
-export { VONFT_Client, VOSBT_Client, authClient };
+export { VosbtClient, VonftClient, authClient };
