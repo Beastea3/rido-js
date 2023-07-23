@@ -1,0 +1,8 @@
+{
+  "jslint.version": "latest",
+  "jslint.options": {},
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript"]
+}
