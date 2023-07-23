@@ -1,37 +1,37 @@
-import { AuthClient } from "js-metamask-ii";
-import { ethers, Wallet } from "ethers";
+import { AuthClient } from 'js-metamask-ii';
+import { ethers } from 'ethers';
 
-export const authClient = {
+const Auth = {
   authClient: null,
-  async logIn() {
+  async logIn(callback) {
     //   setIslogin(true);
-    authClient = await AuthClient.create();
-    authClient.login({
+    Auth.authClient = await AuthClient.create();
+    Auth.authClient.login({
       maxTimeToLive: BigInt(7) * BigInt(24) * BigInt(3_600_000_000_000), // 1 week
       onSuccess: () => {
-        console.log("Login Successful!");
-        const identity = authClient.getIdentity();
-        setIdentity(identity);
-        setIslogin(false);
+        console.log('Login Successful!');
+        const identity = Auth.authClient.getIdentity();
+        callback(identity);
+        // setIdentity(identity);
+        // setIslogin(false);
       },
       onError: (error) => {
-        console.error("Login Failed: ", error);
-        setIslogin(false);
+        console.error('Login Failed: ', error);
+        // setIslogin(false);
       },
     });
   },
 
   logout() {
-    authClient.logout();
+    Auth.authClient.logout();
   },
 
   async signMessage({ setError, message }) {
     try {
       console.log({ message });
-      if (!window.ethereum)
-        throw new Error("No crypto wallet found. Please install it.");
+      if (!window.ethereum) { throw new Error('No crypto wallet found. Please install it.'); }
 
-      await window.ethereum.send("eth_requestAccounts");
+      await window.ethereum.send('eth_requestAccounts');
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const signature = await signer.signMessage(message);
@@ -45,6 +45,7 @@ export const authClient = {
     } catch (err) {
       console.log(err.message);
       setError(err.message);
+      return null;
     }
   },
 };
