@@ -1,5 +1,5 @@
-import vonft from '../did/vonft';
-import VosbtClient from './vosbtClient';
+import vonft from '../did/ncan.js';
+import VosbtClient from './vosbtClient.js';
 
 class VonftClient extends VosbtClient {
   construct({ identity, canisterId }) {
@@ -10,51 +10,56 @@ class VonftClient extends VosbtClient {
     return this;
   }
 
-  static createAgent({ identity, canisterId }) {
-    const client = new VonftClient({ identity, canisterId });
-    return client.initAgent();
+  static async create({ identity, canisterId }) {
+    const client = new VonftClient({});
+    client.agent = await client.initAgent(vonft, identity, canisterId);
+    // return this;
+    return client;
   }
 
   // vot_burn : (nat64) -> ();
   async burn(tokenId) {
     this.checkActive();
-    return this.agent.burn(tokenId);
+    return this.agent.vot_burn(tokenId);
   }
 
   // vot_approve : (Account, nat64) -> ();
   async approve(address, tokenId) {
     this.checkActive();
-    return this.agent.approve(address, tokenId);
+    return this.agent.vot_approve({ Eth: address }, tokenId);
   }
 
   // vot_unapprove : (nat64) -> ();
   async unapprove(tokenId) {
     this.checkActive();
-    return this.agent.unapprove(tokenId);
+    return this.agent.vot_unapprove(tokenId);
   }
 
   // vot_get_approved : (nat64) -> (Account_1) query;
   async getApproved(tokenId) {
     this.checkActive();
-    return this.agent.get_approved(tokenId);
+    return this.agent.vot_get_approved(tokenId);
   }
 
   // vot_is_approved_for_all : (Account, Account) -> (bool) query;
   async isApprovedForAll(srcAddr, tgtAddr) {
     this.checkActive();
-    return this.agent.is_approved_for_all(srcAddr, tgtAddr);
+    return this.agent.vot_is_approved_for_all(
+      { Eth: srcAddr },
+      { Eth: tgtAddr },
+    );
   }
 
   // vot_set_approval_for_all : (Account, bool) -> ();
   async setApprovalForAll(addr, approved) {
     this.checkActive();
-    return this.agent.set_approval_for_all(addr);
+    return this.agent.vot_set_approval_for_all({ Eth: addr }, approved);
   }
 
   // vot_transfer_from : (Account, Account, nat64) -> ();
   async transferFrom(from, to, tokenId) {
     this.checkActive();
-    return this.agent.transfer_from(from, to, tokenId);
+    return this.agent.vot_transfer_from({ Eth: from }, { Eth: to }, tokenId);
   }
 }
 

@@ -18,14 +18,15 @@ class RidoClient {
     throw new Error('Agent has not been initialized.');
   }
 
-  async initAgent() {
-    this.agent = await Actor.createActor(this.did, {
+  async initAgent(_did, identity, canisterId) {
+    this.agent = await Actor.createActor(_did, {
       agent: new HttpAgent({
         host: 'https://ic0.app',
-        identity: this.identity,
+        identity,
       }),
-      canisterId: this.canisterId,
+      canisterId,
     });
+    return this.agent;
   }
 
   static createAgent({ identity, did, canisterId }) {

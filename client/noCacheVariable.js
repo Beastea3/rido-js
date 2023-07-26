@@ -1,4 +1,4 @@
-import cacheVarDid from '../did/vosbt';
+import cacheVarDid from '../did/ncan.js';
 import VariableClient from './variable';
 
 class NoCacheVariableClient extends VariableClient {
@@ -10,14 +10,16 @@ class NoCacheVariableClient extends VariableClient {
     return this;
   }
 
-  static createAgent({ identity, canisterId }) {
-    const client = new VariableClient({ identity, canisterId });
-    return client.initAgent();
+  static async create({ identity, canisterId }) {
+    const client = new varDid({});
+    client.agent = await client.initAgent(cacheVarDid, identity, canisterId);
+    // return this;
+    return client;
   }
 
   //   get : (nat64) -> (Result_3) query;
   get(votTokenId) {
-    return this.agent.get_variable(votTokenId);
+    return this.agent.get(votTokenId);
   }
 }
 

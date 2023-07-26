@@ -1,5 +1,5 @@
-import RidoClient from './ridoClient';
-import varDid from '../did/vosbt';
+import RidoClient from './ridoClient.js';
+import varDid from '../did/ncan.js';
 
 class VariableClient extends RidoClient {
   construct({ identity, canisterId }) {
@@ -10,9 +10,11 @@ class VariableClient extends RidoClient {
     return this;
   }
 
-  static createAgent({ identity, canisterId }) {
-    const client = new VariableClient({ identity, canisterId });
-    return client.initAgent();
+  static async create({ identity, canisterId }) {
+    const client = new varDid({});
+    client.agent = await client.initAgent(varDid, identity, canisterId);
+    // return this;
+    return client;
   }
 
   // public_read : () -> (int8) query;
@@ -22,7 +24,7 @@ class VariableClient extends RidoClient {
 
   // set : (nat64, vec nat8) -> (Result);
   set(votTokenId, content) {
-    return this.agent.set_variable(votTokenId, content);
+    return this.agent.set(votTokenId, content);
   }
 }
 
