@@ -1,5 +1,4 @@
 import { Identity } from '@dfinity/agent';
-import { IDL } from '@dfinity/candid';
 import { Principal } from '@dfinity/principal';
 
 export declare enum PubType {
@@ -47,11 +46,15 @@ export declare class VonftClient extends VosbtClient {
   transferFrom(from: Account, to: Account, tokenId: BigInt): Promise<void>;
 }
 
+export declare interface Result {
+    Ok?: any;
+    Err?: any;
+}
 export declare class ActClient extends RidoClient {
   static create(config: ClientConfig): Promise<VosbtClient>;
 
-  mint(tokenId: bigint): Promise<void>;
-  mintTo(address: Account, tokenId: bigint): Promise<void>;
+  mint(tokenId: bigint): Promise<TokenResult>;
+  mintTo(address: Account, tokenId: bigint): Promise<TokenResult>;
   transferFrom(
     from: Account,
     to: Account,
@@ -60,25 +63,25 @@ export declare class ActClient extends RidoClient {
   ): Promise<void>;
   ownerOf(tokenId: BigInt, voNftTokenId: BigInt): Promise<Account_1>;
   permission(srcAddr: Account, tgtAddr: Account): Promise<boolean>;
-  expirationTime(tokenId: BigInt, voNftTokenId: BigInt): Promise<void>;
-  approve(addr: Account, voNftTokenId: BigInt, tokenId: BigInt): Promise<void>;
+  expirationTime(tokenId: BigInt, voNftTokenId: BigInt): Promise<BigInt>;
+  approve(addr: Account, _tokenId: BigInt, voNftTokenId: BigInt): Promise<void>;
   unapprove(tokenId: BigInt, voNftTokenId: BigInt): Promise<void>;
-  isApprovedForAll(addr: Account): Promise<void>;
+  isApprovedForAll(addr: Account): Promise<boolean>;
   setApprovalForAll(addr: Account, approved: boolean): Promise<void>;
   getApproved(voNftTokenId: BigInt, tokenId: BigInt): Promise<void>;
-  getToken(addr: Account): Promise<void>;
-  merge(tokenId: BigInt, voNftTokenId: BigInt): Promise<void>;
+  getToken(addr: Account): Promise<BigInt[]>;
+  merge(tokenId: BigInt, voNftTokenId: BigInt): Promise<Result>;
 }
 
 export declare class VariableClient extends RidoClient {
   static create(config: ClientConfig): Promise<VosbtClient>;
 
   publicRead(): Promise<number>;
-  set(tokenId: bigint, content: string): Promise<void>;
+  set(tokenId: bigint, content: string): Promise<Result>;
 }
 
 export declare class NoCacheVariableClient extends VariableClient {
   static create(config: ClientConfig): Promise<VosbtClient>;
 
-  get(tokenId: BigInt): Promise<>;  
+  get(tokenId: BigInt): Promise<Result>;  
 }

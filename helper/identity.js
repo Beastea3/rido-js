@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 
 const Auth = {
   authClient: null,
-  async logIn(callback) {
+  async logIn(onSuccess, onError) {
     //   setIslogin(true);
     Auth.authClient = await AuthClient.create();
     Auth.authClient.login({
@@ -11,12 +11,13 @@ const Auth = {
       onSuccess: () => {
         console.log('Login Successful!');
         const identity = Auth.authClient.getIdentity();
-        callback(identity);
+        onSuccess(identity);
         // setIdentity(identity);
         // setIslogin(false);
       },
       onError: (error) => {
         console.error('Login Failed: ', error);
+        onError(error);
         // setIslogin(false);
       },
     });
@@ -29,7 +30,9 @@ const Auth = {
   async signMessage({ setError, message }) {
     try {
       console.log({ message });
-      if (!window.ethereum) { throw new Error('No crypto wallet found. Please install it.'); }
+      if (!window.ethereum) {
+        throw new Error('No crypto wallet found. Please install it.');
+      }
 
       await window.ethereum.send('eth_requestAccounts');
       const provider = new ethers.providers.Web3Provider(window.ethereum);

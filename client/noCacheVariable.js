@@ -1,5 +1,5 @@
 import cacheVarDid from '../did/ncan.js';
-import VariableClient from './variable';
+import VariableClient from './variableClient.js';
 
 class NoCacheVariableClient extends VariableClient {
   construct({ identity, canisterId }) {
@@ -11,7 +11,7 @@ class NoCacheVariableClient extends VariableClient {
   }
 
   static async create({ identity, canisterId }) {
-    const client = new varDid({});
+    const client = new NoCacheVariableClient({});
     client.agent = await client.initAgent(cacheVarDid, identity, canisterId);
     // return this;
     return client;

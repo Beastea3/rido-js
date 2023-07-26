@@ -1,10 +1,19 @@
-import RidoClient from './client/ridoClient';
-import VonftClient from './client/vonftClient';
-import VosbtClient from './client/vosbtClient';
-import RelayerClient from './client/relayerClient';
-import Auth from './helper/identity';
+import RidoClient from './client/ridoClient.js';
+import VonftClient from './client/vonftClient.js';
+import VosbtClient from './client/vosbtClient.js';
+import RelayerClient from './client/relayerClient.js';
+import ActClient from './client/actClient.js';
+import Auth from './helper/identity.js';
+import VariableClient from './client/variableClient.js';
+import NoCacheVariableClient from './client/noCacheVariable.js';
 
 export default RidoClient;
 export {
-  VosbtClient, VonftClient, RelayerClient, Auth,
+  ActClient,
+  Auth,
+  NoCacheVariableClient,
+  RelayerClient,
+  VariableClient,
+  VonftClient,
+  VosbtClient,
 };

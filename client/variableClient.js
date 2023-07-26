@@ -11,7 +11,7 @@ class VariableClient extends RidoClient {
   }
 
   static async create({ identity, canisterId }) {
-    const client = new varDid({});
+    const client = new VariableClient({});
     client.agent = await client.initAgent(varDid, identity, canisterId);
     // return this;
     return client;
@@ -24,7 +24,7 @@ class VariableClient extends RidoClient {
 
   // set : (nat64, vec nat8) -> (Result);
   set(votTokenId, content) {
-    return this.agent.set(votTokenId, content);
+    return this.agent.set(votTokenId, new TextEncoder().encode(content));
   }
 }
 
