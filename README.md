@@ -1,8 +1,8 @@
 ### Example of Usage
-
+`npm i -S ridojs`
 ```js
 // import Client Classes you need
-import { NoCacheVariableClient, Auth } from 'rido-js';
+import { NoCacheVariableClient, Auth } from 'ridojs';
 
 // setIdentity is a callback to return the principal
 Auth.logIn(setIdentity);
