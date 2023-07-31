@@ -1,6 +1,6 @@
 {
   "name": "ridojs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "JS Dev Kit for RIDO",
   "main": "./index.js",
   "type": "module",
