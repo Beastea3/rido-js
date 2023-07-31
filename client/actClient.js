@@ -17,6 +17,13 @@ class ActClient extends RidoClient {
     return client;
   }
 
+  async getCollectionIdByVonftId(voNftTokenId, permissionType) {
+    return this.agent.act_collection_id_from_vonft(
+      voNftTokenId,
+      permissionType,
+    );
+  }
+
   // act_mint : (nat8, nat64, nat64) -> (Result_1);
   async mint(permissionType, voNftTokenId, expireAt) {
     this.checkActive();
@@ -41,13 +48,15 @@ class ActClient extends RidoClient {
   }
 
   // act_transfer_from : (Account, Account, nat64, nat64) -> ();
-  async transferFrom(from, to, _tokenId, voNftTokenId) {
+  async transferFrom(from, to, voNftTokenId, _tokenId) {
     this.checkActive();
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    console.log({ collectionId });
     return this.agent.act_transfer_from(
       { Eth: from },
       { Eth: to },
+      collectionId,
       _tokenId,
-      voNftTokenId,
     );
   }
 
@@ -56,37 +65,38 @@ class ActClient extends RidoClient {
   //   [IDL.Principal, IDL.Opt(IDL.Text)],
   //   ['query'],
   // ),
-  async ownerOf(_tokenId, voNftTokenId) {
+  async ownerOf(voNftTokenId, _tokenId) {
     this.checkActive();
-    return this.agent.act_owner_of(_tokenId, voNftTokenId);
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    return this.agent.act_owner_of(collectionId, _tokenId);
   }
 
   // permission : (nat8, Account, nat64) -> (Result_4) query;
   async permission(permissionType, addr, voNftTokenId) {
     this.checkActive();
+
     return this.agent.permission(permissionType, { Eth: addr }, voNftTokenId);
   }
 
   // act_expiration_time : (nat64, nat64) -> (nat64) query;
-  async expirationTime(_tokenId, voNftTokenId) {
+  async expirationTime(voNftTokenId, _tokenId) {
     this.checkActive();
-    const expirationTime = await this.agent.act_expiration_time(
-      _tokenId,
-      voNftTokenId,
-    );
-    return { expirationTime };
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    return this.agent.act_expiration_time(collectionId, _tokenId);
   }
 
   // act_approve : (Account, nat64, nat64) -> ();
-  async approve(addr, _tokenId, voNftTokenId) {
+  async approve(addr, voNftTokenId, _tokenId) {
     this.checkActive();
-    return this.agent.act_approve({ Eth: addr }, _tokenId, voNftTokenId);
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    return this.agent.act_approve({ Eth: addr }, collectionId, _tokenId);
   }
 
   // act_unapprove : (nat64, nat64) -> ();
-  async unapprove(_tokenId, voNftTokenId) {
+  async unapprove(voNftTokenId, _tokenId) {
     this.checkActive();
-    return this.agent.act_unapprove(_tokenId, voNftTokenId);
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    return this.agent.act_unapprove(collectionId, _tokenId);
   }
 
   // act_is_approved_for_all : (Account, Account) -> (bool) query;
@@ -105,15 +115,17 @@ class ActClient extends RidoClient {
   }
 
   // act_get_approved : (nat64, nat64) -> (Account_1) query;
-  async getApproved(_tokenId, voNftTokenId) {
+  async getApproved(voNftTokenId, _tokenId) {
     this.checkActive();
-    return this.agent.act_get_approved(voNftTokenId, _tokenId);
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    return this.agent.act_get_approved(collectionId, _tokenId);
   }
 
   // act_get_user_tokens : (Account, nat64) -> (vec nat64) query;
-  async getToken(owner, voNftTokenId) {
+  async getTokens(owner, voNftTokenId) {
     this.checkActive();
-    return this.agent.act_get_user_tokens({ Eth: owner }, voNftTokenId);
+    const collectionId = await this.getCollectionIdByVonftId(voNftTokenId, 1);
+    return this.agent.act_get_user_tokens({ Eth: owner }, collectionId);
   }
 
   // act_merge : (nat8, nat64, principal) -> (Result);
